@@ -10,7 +10,17 @@ export GPG_TTY=$(tty)
 echo "🚀 开始上传到Maven Central Portal..."
 echo ""
 
-# 0. 确保GPG密码已缓存
+# 0. 停止Gradle Daemon（重要：确保使用最新的JVM参数和配置）
+# Gradle Daemon会缓存JVM参数和环境变量，修改gradle.properties后必须停止Daemon
+echo "🛑 停止Gradle Daemon以确保使用最新配置..."
+if ./gradlew --stop > /dev/null 2>&1; then
+    echo "✅ Gradle Daemon已停止"
+else
+    echo "ℹ️  没有运行中的Gradle Daemon"
+fi
+echo ""
+
+# 1. 确保GPG密码已缓存
 echo "🔐 配置GPG签名..."
 GPG_KEY_ID="F60455A7"
 GPG_PASSWORD="T@feeling1211"
@@ -40,12 +50,17 @@ fi
 
 echo ""
 
-# 1. 创建并上传部署包
+# 2. 创建并上传部署包
 # 注意：createCentralBundle会自动执行prepareCentralBundle和publishToMavenLocal（依赖关系）
 echo "📦 创建部署包并上传..."
-./gradlew createCentralBundle uploadToCentral
+if ./gradlew createCentralBundle uploadToCentral; then
+    echo "✅ 部署包创建和上传成功"
+else
+    echo "❌ 部署包创建或上传失败"
+    exit 1
+fi
 
-# 2. 获取部署ID
+# 3. 获取部署ID
 DEPLOYMENT_ID=$(cat build/central-bundle/deployment-id.txt 2>/dev/null || echo "")
 if [ -z "$DEPLOYMENT_ID" ]; then
     echo "❌ 未找到部署ID，请检查上传是否成功"

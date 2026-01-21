@@ -43,6 +43,15 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    // OkHttp
+    implementation(libs.okhttp)
+
+    // Gson
+    implementation(libs.gson)
+
+    // Timber Log
+    implementation(libs.timber)
+
     // 引用 libs 目录下的 jar 包
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
 }

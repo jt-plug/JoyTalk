@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <!-- 允许特定域名使用明文通信（HTTP） -->
+    <!-- 允许 halaladmin.vip 及其所有子域名使用明文通信（HTTP） -->
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">dev-joytalk-api.halaladmin.vip</domain>
+        <domain includeSubdomains="true">halaladmin.vip</domain>
     </domain-config>
     
     <!-- 默认情况下，其他所有域名必须使用 HTTPS -->
